@@ -3,4 +3,138 @@
 *:before,
 *:after {
   box-sizing: border-box;
+  margin: auto;
+  max-width: 100%;
+}
+
+/* navigation style */
+nav {
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+  background-color: #333;
+  padding: 1rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: rgb(25, 0, 255);
+}
+
+/* heder styles */
+header {
+  color: white;
+  padding: 1rem;
+}
+
+header a {
+  text-decoration: none;
+}
+
+.siteName {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#tools {
+  text-align: right;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: -21px;
+}
+
+/* Main Style */
+.homepage {
+  position: relative;
+  text-align: center; 
+}
+
+.text_body { 
+  position: absolute; 
+  top: 50%; /* Center vertically */
+  left: 25%;
+  transform: translate(-50%, -50%); /* center the overlay */
+  color: rgb(4, 0, 221); /* Text color */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+  z-index: 1; 
+  border: 1px solid rgba(255, 255, 255, 0.7); /* Semi-transparent white border */
+  width: 200px; 
+  height: 150px; 
+  padding: 5px; 
+  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+  border-radius: 1px; 
+}
+
+/* button style */
+.add_button {
+  display: inline-block; 
+  background-color: rgba(0, 22, 219, 0.904);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.add_button:hover {
+  background-color: gold; /* Add hover effect */
+}
+
+img {
+  /* width: 100%; Make the image responsive */
+  height: auto; 
+  display: block; 
+}
+
+
+.upgrade_and_review {
+  display: grid;
+  grid-template-columns: 1fr; /* Two equal-width columns */
+  gap: 2rem; /* Gap between the two sections */
+  padding: 1rem;
+  background-color: white;
+}
+
+.upgrades, .reviews {
+  background-color: #f5eded; /* Different background color to differentiate sections */
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 10px 10px 15px 10px rgba(0, 0, 0, 0.7); 
+}
+
+.upgrade_img {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  color: rgb(0, 24, 161);
+}
+
+.upgrades h2, .reviews h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* .reviews ul {
+  list-style-type: none;
+  padding-left: 0;
+} */
+
+.reviews li {
+  padding-bottom: 0.5rem;
+  text-align: justify;
+}
+
+/* larger screen styles */
+@media screen and (min-width: 600px) {
+  .upgrade_and_review {
+  grid-template-columns: 1fr 1fr;
+}
+
 }
