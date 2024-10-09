@@ -7,22 +7,42 @@
   max-width: 100%;
 }
 
-/* navigation style */
+/* styles.css */
+
+/* Style for the navigation bar */
 nav {
   display: flex;
-  justify-content:space-between;
-  align-items:center;
-  background-color: #333;
-  padding: 1rem;
+  background-color: hsl(0, 0%, 20%);
+  padding: 10px;
+  justify-content: center;
 }
 
-nav a {
+/* Remove default list styling */
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Display list items horizontally */
+nav ul li {
+  display: inline;
+  margin-right: 15px; /* Adjust spacing between links */
+}
+
+/* Style for the links */
+nav ul li {
   color: white;
   text-decoration: none;
+  padding: 8px 16px;
+  display: inline-block;
 }
 
-nav a:hover {
-  color: rgb(25, 0, 255);
+/* Change link color on hover */
+nav ul li a:hover {
+  background-color: #575757;
+  border-radius: 5px;
 }
 
 /* heder styles */
@@ -56,7 +76,7 @@ header a {
 .text_body { 
   position: absolute; 
   top: 50%; /* Center vertically */
-  left: 25%;
+  left: 35%;
   transform: translate(-50%, -50%); /* center the overlay */
   color: rgb(4, 0, 221); /* Text color */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
@@ -65,7 +85,7 @@ header a {
   width: 200px; 
   height: 150px; 
   padding: 5px; 
-  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+  background-color: rgba(175, 170, 169, 0.349); /* Semi-transparent white background */
   border-radius: 1px; 
 }
 

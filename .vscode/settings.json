@@ -8,6 +8,7 @@
         "dotenv",
         "equiped",
         "firstname",
+        "getclassificationsbyid",
         "lastname",
         "nodemon",
         "offroading",
@@ -18,5 +19,19 @@
         "survalence",
         "survan",
         "trafic"
+    ],
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "render.com",
+            "connectString": "postgresql://cse340cu:v74EqosdEy8narwm3kbZDTE5HK1xBTd6@dpg-cru0gal2ng1s73ckm0mg-a.ohio-postgres.render.com/cse340cu_k3gj"
+        }
     ]
 }
