@@ -15,6 +15,7 @@ nav {
   background-color: hsl(0, 0%, 20%);
   padding: 10px;
   justify-content: center;
+
 }
 
 /* Remove default list styling */
@@ -32,7 +33,7 @@ nav ul li {
 }
 
 /* Style for the links */
-nav ul li {
+nav ul li a {
   color: white;
   text-decoration: none;
   padding: 8px 16px;
@@ -41,7 +42,7 @@ nav ul li {
 
 /* Change link color on hover */
 nav ul li a:hover {
-  background-color: #575757;
+  background-color: #f1f520cb;
   border-radius: 5px;
 }
 
@@ -151,10 +152,62 @@ img {
   text-align: justify;
 }
 
+/*Designing the inventory cars*/
+#inv-display {
+  display: grid;
+  grid-template-columns: 1fr; /* Two equal-width columns */
+  gap: 2rem; /* Gap between the two sections */
+  padding: 3px;
+  justify-content: space-between;
+  max-width: 100%;
+  height: auto;
+}
+
+#inv-display {
+  padding: 3rem;
+  border-radius: 5px;
+  background-color: #bdbabaf3;
+  margin: 10px;
+}
+
+.namePrice span {
+  background-color: #706f6f;
+  border-radius: 5px;
+  padding: 0.2rem;
+  color: #fff;
+  margin-left: 20px;
+}
+
+#inv-display img{
+  padding: 20px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+#inv-display h2{
+  padding: 5px;
+  margin: 5px;
+}
+
+#inv-display a {
+  text-decoration: none;
+}
+
 /* larger screen styles */
 @media screen and (min-width: 600px) {
   .upgrade_and_review {
   grid-template-columns: 1fr 1fr;
+}
+
+#inv-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Two equal-width columns */
+  gap: 2rem; /* Gap between the two sections */
+  padding: 3px;
+  background-color: #bdbabaf3;
+  justify-content: space-between;
+  max-width: 100%;
+  height: auto;
 }
 
 }
