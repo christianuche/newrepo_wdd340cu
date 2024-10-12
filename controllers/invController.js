@@ -18,51 +18,42 @@ invCont.buildByClassificationId = async function (req, res, next) {
   })
 }
 
-/* ***************************
- *  Build inventory by detail view
- * ************************** */
 
-// Just added this now
-invCont.buildDetailView = async function(req, res, next) {
-    const id = req.params.id;
+/* ***************************
+ *  Build inventory by vehicle view
+ * ************************** */
+invCont.buildVehicleDetail = async function (req, res, next) {
     try {
-        const vehicleData = await invModel.getVehicleById(id);
-        const grid = utilities.buildVehicleDetailHTML(vehicleData);
-        const nav = await utilities.getNav();
-        res.render("inventory/detail", {
-            title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
+        const vehicleId = req.params.vehicleId;
+        const data = await invModel.getVehicleId(vehicleId);
+        
+        if (!data) {
+            // Handle vehicle not found
+            return res.status(404).render("errors/error", { message: "Vehicle not found" });
+        }
+
+        // Navigation (Optional) - depending on your project requirements
+        let nav = await utilities.getNav();
+
+        // Render the vehicle detail page
+        res.render("./inventory/vehicle", {
+            title: `${data.inv_make} ${data.inv_model} ${data.inv_year}`,
             nav,
-            grid,
+            vehicle: data
         });
     } catch (error) {
-        next(error);
+        next(error);  // Pass error to middleware
     }
 };
 
+// Controller to trigger a 500 error
+invCont.triggerError = (req, res, next) => {
+    // Intentionally cause an error
+    const error = new Error('This is an intentional 500 error.');
+    error.status = 500;
+    next(error); // Pass the error to the error handling middleware
+};
 
-// invController.js
-invCont.buildDetailView = async function (req, res, next) {
-    try {
-      const id = req.params.id; // Get the vehicle ID from the request parameters
-      const data = await invModel.getInventoryById(id); // Fetch data from the model
-      const nav = await utilities.getNav();
-  
-      // Check if any data was returned
-      if (data.length === 0) {
-        return next({ status: 404, message: "Vehicle not found." }); // Handle case when vehicle is not found
-      }
-  
-      const vehicle = data[0]; // Assuming data is an array, take the first item
-      res.render("inventory/detail", {
-        title: `${vehicle.inv_make} ${vehicle.inv_model}`,
-        nav,
-        vehicle,
-      });
-    } catch (error) {
-      console.error("Error in buildDetailView:", error); // Log any errors
-      next(error); // Pass the error to the error handling middleware
-    }
-  };
-  
 
-module.exports = invCont;
+
+module.exports = invCont

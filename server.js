@@ -8,6 +8,8 @@
 /* ***********************
  * Require Statements
  *************************/
+const session = require("express-session")
+const pool = require('./database/')
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
@@ -16,7 +18,31 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/index");
 const inventoryRoute = require('./routes/inventoryRoute');
+const accountRoute = require('./routes/accountRoute')
 
+
+/* ***********************
+ * Middleware
+ * ************************/
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+
+
+// Express Messages Middleware
+app.use(require('connect-flash')())
+
+app.use(function(req, res, next){
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
 
 /* ***********************
  * View Engine and Template
@@ -39,15 +65,14 @@ app.use("/inv", inventoryRoute)
 // Index route
 app.get("/", baseController.buildHome)
 
-// File Not Found Route - must be last route in list
+// Account route
+app.use('/account', accountRoute);
+
+// File Not Found Route - must be last in the list
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
 
-// Just added this code now
-app.get("/trigger-error", (req, res) => {
-  throw new Error("This is a simulated server error.");
-});
 
 
 /* ***********************
@@ -57,12 +82,25 @@ app.get("/trigger-error", (req, res) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
+  if(err.status == 404 ){message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
   res.render("errors/error", {
     title: err.status || 'Server Error',
-    message: err.message,
+    message,
     nav
   })
+})
+
+
+/* ***********************
+* Intentional Error Handler
+* Place after all other middleware
+*************************/
+app.use((error, req, res, next) => {
+  console.error(error.stack); // Log the error stack for debugging.
+  res.status(error.status || 500); // Set the 500 for internal errors
+  res.render('errors/error', { // Render the error view
+    message // Pass the error message to the view
+  }) 
 })
 
 /* ***********************

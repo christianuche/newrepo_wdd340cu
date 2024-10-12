@@ -9,6 +9,7 @@
 
 /* styles.css */
 
+
 /* Style for the navigation bar */
 nav {
   display: flex;
@@ -173,9 +174,7 @@ img {
 .namePrice span {
   background-color: #706f6f;
   border-radius: 5px;
-  padding: 0.2rem;
   color: #fff;
-  margin-left: 20px;
 }
 
 #inv-display img{
@@ -184,18 +183,102 @@ img {
   border-radius: 5px;
 }
 
-#inv-display h2{
-  padding: 5px;
-  margin: 5px;
+ul, ol {
+  list-style: none; /* Removes bullet points or numbers */
+  padding-left: 0;   /* Adjusts padding to align the list */
+  text-align: center;
 }
 
-#inv-display a {
-  text-decoration: none;
+
+
+.vehicle-detail-page {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 20px;
+}
+
+.vehicle-gallery {
+  flex: 1;
+  min-width: 300px;
+}
+
+.vehicle-gallery img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.thumbnail-gallery img {
+  width: 80px;
+  height: 60px;
+  margin-right: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: inline;
+}
+
+.vehicle-info {
+  flex: 1;
+  max-width: 500px;
+}
+
+.vehicle-info h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.vehicle-info .price {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #d9534f;
+  margin-bottom: 20px;
+}
+
+.vehicle-info .mileage {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.vehicle-specs p {
+  margin-bottom: 10px;
+}
+
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.actions button:hover {
+  background-color: #45a049;
+}
+
+
+.vehicle-gallery, .vehicle-info {
+  display: grid;
+  grid-template-columns: 1fr; /* Two equal-width columns */
+  gap: 2rem; /* Gap between the two sections */
+  padding: 1rem;
+  background-color: white;
 }
 
 /* larger screen styles */
 @media screen and (min-width: 600px) {
-  .upgrade_and_review {
+.upgrade_and_review {
   grid-template-columns: 1fr 1fr;
 }
 
@@ -209,5 +292,10 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.vehicle-left, .vehicle-right {
+  width: 50%;
+}
+
 
 }

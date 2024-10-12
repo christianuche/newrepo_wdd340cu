@@ -55,22 +55,8 @@ Util.buildClassificationGrid = async function(data){
       grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
     return grid
-}
+  }
 
-// Just added this now
-// utilities/index.js
-Util.buildVehicleDetailHTML = function(vehicle) {
-    return `
-        <div class="vehicle-detail">
-            <h2>${vehicle.inv_make} ${vehicle.inv_model}</h2>
-            <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" />
-            <p>Year: ${vehicle.inv_year}</p>
-            <p>Mileage: ${new Intl.NumberFormat('en-US').format(vehicle.inv_mileage)} miles</p>
-            <p>Price: $${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</p>
-            <p>Description: ${vehicle.inv_description}</p>
-        </div>
-    `;
-};
 
 
   /* ****************************************

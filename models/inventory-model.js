@@ -20,42 +20,30 @@ async function getInventoryByClassificationId(classification_id) {
         WHERE i.classification_id = $1`,
         [classification_id]
       )
+      if (data.rows.length == 0 ) {
+        throw new Error('Nothing is found in this page try another ID'); // throw error if no vehicle found
+    }
       return data.rows
     } catch (error) {
       console.error("getclassificationsbyid error " + error)
     }
 }
 
-/* ***************************
- *  Get all inventory items and vehicle_name by classification_id
- * ************************** */
-
-// inventory-model.js just added now
-async function getVehicleById(inv_id) {
+// Get all vehicle inventory
+async function getVehicleId(vehicleId) {
     try {
-        const result = await pool.query("SELECT * FROM public.inventory WHERE inv_id = $1", [inv_id]);
-        return result.rows[0]; // Return the first matching vehicle
+        const data = await pool.query(
+            `SELECT * FROM public.inventory WHERE inv_id = $1`,
+            [vehicleId]
+        );
+        if (data.rows.length == 0 ) {
+            throw new Error('No vehicle found with this ID'); // throw error if no vehicle found
+        }
+        return data.rows[0];  // Return the first row of the result
     } catch (error) {
-        console.error("Error fetching vehicle by ID:", error);
-        throw error;
+        throw new Error("Database query failed");
     }
 }
 
 
-
-// inventory-model.js
-async function getInventoryById(inv_id) {
-    try {
-      const data = await pool.query(
-        `SELECT * FROM public.inventory WHERE inv_id = $1`,
-        [inv_id]
-      );
-      return data.rows; // Return the rows fetched from the database
-    } catch (error) {
-      console.error("getInventoryById error: " + error);
-      throw error; // Rethrow the error for the controller to catch
-    }
-  }
-  
-
-module.exports = {getClassifications, getInventoryByClassificationId, getVehicleById};
+module.exports = {getClassifications, getInventoryByClassificationId, getVehicleId};
