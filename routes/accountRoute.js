@@ -3,8 +3,15 @@ const express = require('express');
 const router = new express.Router();
 const utilities = require('../utilities/index'); // Adjust path as necessary
 const accountController = require('../controllers/accountController');
+const regValidate = require('../utilities/account-validation')
 
 // Login route
+router.post(
+    "/register",
+    regValidate.registrationRules(),
+    regValidate.checkRegData,
+    utilities.handleErrors(accountController.registerAccount)
+  )
 
 // Add a GET route for "My Account"
 router.get('/login', utilities.handleErrors(accountController.buildLogin));
