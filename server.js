@@ -18,7 +18,9 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/index");
 const inventoryRoute = require('./routes/inventoryRoute');
-const accountRoute = require('./routes/accountRoute')
+const accountRoute = require("./routes/accountRoute")
+const accountController = require("./controllers/accountController")
+const bodyParser = require("body-parser") // import the body-parser
 
 
 /* ***********************
@@ -44,6 +46,18 @@ app.use(function(req, res, next){
   next()
 })
 
+//Added a new
+// Flash middleware to pass messages to every response
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success');
+  res.locals.error_msg = req.flash('error');
+  next();
+});
+
+// Middleware for parsing incoming data
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 /* ***********************
  * View Engine and Template
  *************************/
@@ -62,11 +76,12 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
+// account route
+app.use("/account", require("./routes/accountRoute"))
+
 // Index route
 app.get("/", baseController.buildHome)
 
-// Account route
-app.use('/account', accountRoute);
 
 // File Not Found Route - must be last in the list
 app.use(async (req, res, next) => {
