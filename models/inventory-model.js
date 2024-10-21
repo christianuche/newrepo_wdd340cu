@@ -7,6 +7,11 @@ async function getClassifications(){
   return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
 }
 
+async function addClassification(classification_name) {
+  const sql = 'INSERT INTO public.classification (classification_name) VALUE ($1)';
+  await pool.query(sql, [classification_name]);
+}
+
 
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
@@ -45,5 +50,23 @@ async function getVehicleId(vehicleId) {
     }
 }
 
+/* ***************************
+ *  Add a new inventory item
+ * ************************** */
+async function addInventoryItem(make, model, classification_id) {
+  const sql = 'INSERT INTO public.inventory (inv_make, inv_model, classification_id) VALUES ($1, $2, $3)';
+  try {
+      await pool.query(sql, [make, model, classification_id]);
+  } catch (error) {
+      console.error("Error adding inventory item: ", error);
+      throw new Error("Failed to add inventory item");
+  }
+}
 
-module.exports = {getClassifications, getInventoryByClassificationId, getVehicleId};
+module.exports = {
+  getClassifications,
+  addClassification,
+  getInventoryByClassificationId,
+  getVehicleId,
+  addInventoryItem
+};
