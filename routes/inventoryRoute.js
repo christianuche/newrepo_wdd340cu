@@ -2,7 +2,9 @@
 const express = require("express")
 const router = new express.Router() 
 const invController = require("../controllers/invController");
-const {check} = require("express-validator")
+const validateResult = require("../utilities/inventory-validation")
+
+
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", invController.buildByClassificationId);
@@ -14,21 +16,25 @@ router.get('/', invController.buildManagementView);
 
 // Add classification view route
 router.get("/add-classification", invController.addClassificationView)
-//
-// Add inventory view route
-router.get('/add-inventory', invController.addInventoryView);
+
+// Route for rendering the add inventory form
+router.get("/add-inventory", invController.addInventoryView)
+
+// Route for handling inventory form submission
+router.post(
+  "/add-inventory",
+  validateResult.inventoryRules(),   // Apply validation rules
+  validateResult.inventoryData,      // Check for errors and continue if none
+  invController.addInventory         // Controller function to process data
+)
+
 
 // Add classification process route with server-side validation
-router.post("/add-classification", [
-    check("classification_name").isAlphanumeric().withMessage("Classification name must not contain special characters or spaces")
-], invController.addClassification);
-
-// Add inventory process route with validation
-router.post('/add-inventory', [
-    check('inv_make').notEmpty().withMessage('Make is required'),
-    check('inv_model').notEmpty().withMessage('Model is required'),
-    check('classification_id').notEmpty().withMessage('Classification is required')
-], invController.addInventory);
+router.post("/add-classification",
+    validateResult.classificationRules(),
+    validateResult.classificationData,
+    invController.addClassification
+)
 
 
 

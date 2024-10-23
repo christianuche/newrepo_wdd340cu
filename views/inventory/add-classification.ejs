@@ -6,21 +6,26 @@
 
 <%# message() %>
 
-<% if (locals.errors) { %>
+<% if (locals.flashMessage) { %>
     <div class="error-messages">
-        <ul>
-            <% errors.forEach(function(error) { %>
-                <li><%= error.msg %></li>
-            <% }); %>
-        </ul>
+        <%= flashMessage %>
     </div>
 <% } %>
-
+<% if (errors) { %>
+    <ul class="message warning">
+      <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+      <%  }) %>
+    </ul>
+    <% } %>
+     
 <!-- Add Classification Form -->
-<form action="/inv/add-classification" method="POST" id="addClassificationForm">
-    <fieldset>
+<form class="addClass" action="/inv/add-classification" method="POST" id="addClassification">
+    <p class="addField">FIELD IS REQUIRED</p><br>
+    <fieldset class="addFieldset">
+        <p class="addField">NAME MUST BE ALPHABETIC CHARACTERS ONLY.</p>
         <label for="classificationName">Classification Name</label>
-        <input type="text" id="classificationName" name="classification_name" required value="<%= classificationName %>" pattern="^[A-Za-z0-9]+$" title="No spaces or special characters allowed">
-        <button type="submit">Add Classification</button>
+        <input type="text" id="classification_name" name="classification_name" required value="<%= classification_name %>" pattern="^[A-Za-z0-9]+$" title="No spaces or special characters allowed">
+        <button id="Addbtn" type="submit">Add Classification</button>
     </fieldset>
 </form>

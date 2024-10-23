@@ -8,7 +8,7 @@ async function getClassifications(){
 }
 
 async function addClassification(classification_name) {
-  const sql = 'INSERT INTO public.classification (classification_name) VALUE ($1)';
+  const sql = 'INSERT INTO public.classification (classification_name) VALUES ($1)';
   await pool.query(sql, [classification_name]);
 }
 
@@ -50,20 +50,45 @@ async function getVehicleId(vehicleId) {
     }
 }
 
-/* ***************************
- *  Add a new inventory item
- * ************************** */
-async function addInventoryItem(make, model, classification_id) {
-  const sql = 'INSERT INTO public.inventory (inv_make, inv_model, classification_id) VALUES ($1, $2, $3)';
+async function getInventoryItems() {
+  const sql = 'SELECT * FROM public.inventory ORDER BY inv_make;';
   try {
-      await pool.query(sql, [make, model, classification_id]);
+    const result = await pool.query(sql);
+    return result.rows;
   } catch (error) {
-      console.error("Error adding inventory item: ", error);
-      throw new Error("Failed to add inventory item");
+    console.error('Error fetching inventory items: ', error);
+    throw new Error('Failed to fetch inventory items');
   }
 }
 
+
+/* ***************************
+ *  Add a new inventory item
+ * ************************** */
+async function addInventoryItem(inv_make, inv_model, inv_year, inv_price, inv_miles, classification_id, inv_color, inv_description, inv_image, inv_thumbnail) {
+  const sql = `
+    INSERT INTO public.inventory 
+    (inv_make, inv_model, inv_year, inv_price, inv_miles, classification_id, inv_color, inv_description, inv_image, inv_thumbnail) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+    RETURNING inv_id;`; // Returning the inserted item ID (optional)
+
+  try {
+    const result = await pool.query(sql, [
+      inv_make, inv_model, inv_year, inv_price, inv_miles, 
+      classification_id, inv_color, inv_description, inv_image, inv_thumbnail
+    ]);
+
+    // Returning the newly inserted inventory ID or other useful information
+    return result.rows[0].inv_id;
+  } catch (error) {
+    console.error("Error adding inventory item: ", error);
+    throw new Error("Failed to add inventory item");
+  }
+}
+
+
 module.exports = {
+  getInventoryItems,
   getClassifications,
   addClassification,
   getInventoryByClassificationId,

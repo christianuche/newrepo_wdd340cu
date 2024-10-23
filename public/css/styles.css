@@ -388,7 +388,7 @@ input {
 button {
   width: 100%;
   padding: 10px;
-  background-color: #007BFF;
+  background-color: #0356ad;
   color: white;
   border: none;
   cursor: pointer;
@@ -398,7 +398,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #0866ca;
 }
 
 div.form-group span {
@@ -415,6 +415,81 @@ p.insT{
   padding: 8px;
 }
 
+/* Styling for management form */
+.manageInv {
+  text-align: left;
+  padding: 20px;
+}
+
+
+/* Styling for the validation form */
+label {
+  padding: 6px;
+  display: block;
+  margin: 1px;
+  padding: 1px;
+}
+
+.field {
+  margin: 1px;
+  padding: 1px;
+}
+
+input:invalid {
+  background-color: #f0d1d1d5;
+}
+
+form:invalid {
+  border: 5px solid #ebcdcdd5;
+  padding: 20px;
+}
+
+input:valid {
+  background-color: #71f171d2;
+}
+
+form:valid {
+  border: 5px solid #71f171d2;
+  padding: 20px;
+}
+
+input:required {
+  border-color: #a80707cc;
+  border-width: 2px;
+}
+
+input:required:invalid {
+  border-color: #c00000;
+}
+
+#classification_name {
+  width: 70%;
+}
+
+#inv_color, #inv_make, #inv_model, #inv_description, #inv_image, #inv_thumbnail, #inv_price, #inv_year, #inv_miles {
+  width: 75%;
+}
+
+#Addbtn {
+  width: 50%;
+}
+
+
+.addClass {
+  margin: 15px;
+  background-color: #0d0588;
+  width: 50%;
+  margin-left: 300px;
+}
+.addFieldset {
+  background-color: #023469da;
+}
+.addField {
+  text-align: left;
+  font-style: italic;
+  color: #fff;
+  padding: 10px 10px 10px 0px
+}
 
 /* Mobile-friendly adjustments */
 @media (max-width: 400px) {
