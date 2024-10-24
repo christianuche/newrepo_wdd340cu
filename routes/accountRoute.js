@@ -16,13 +16,19 @@ router.post(
 // Process the login attempt
 router.post(
   "/login",
-  (req, res) => {
-    res.status(200).send('login process')
-  }
+  regValidate.loginRules(),
+  regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
 )
 
+// Route for the login process
+router.post('/login', utilities.handleErrors(accountController.processLogin))
+
+router.get('/management', utilities.handleErrors(accountController.getAccountManagement));
 // Add a GET route for "My Account"
 router.get('/login', utilities.handleErrors(accountController.buildLogin));
+// Add a GET route for "My Account"
+router.post('/login', utilities.handleErrors(accountController.accountLogin));
 // Add a GET route for "My Registration"
 router.get('/register', utilities.handleErrors(accountController.buildRegister));
 // Add the registration route using POST

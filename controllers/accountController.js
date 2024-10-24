@@ -1,6 +1,8 @@
 const utilities = require('../utilities/index'); // Adjust path as necessary
 const accountModel = require('../models/account-model') // Import the account model
-const bcrypt = require("bcryptjs") 
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 
 /* ****************************************
@@ -28,7 +30,7 @@ async function buildRegister(req, res, next) {
 }
 
 // This function would be part of login form submission handling
-const processLogin = (req, res) => {
+const processLogin = (req, res, next) => {
     const { account_email, account_password } = req.body;
   
     // Simulate a login check
@@ -44,7 +46,7 @@ const processLogin = (req, res) => {
 /* ****************************************
 *  Process Registration
 * *************************************** */
-async function registerAccount(req, res) {
+async function registerAccount(req, res, next) {
     let nav = await utilities.getNav();
     const { 
         account_firstname, 
@@ -95,4 +97,58 @@ async function registerAccount(req, res) {
     }
 }
 
-module.exports = { buildLogin, processLogin, buildRegister, registerAccount }
+/* ****************************************
+*  Process Login request
+* *************************************** */
+async function accountLogin(req, res, next) {
+    let nav = await utilities.getNav();
+    const { account_email, account_password } = req.body
+    const accountData = await accountModel.getAccountByEmail(account_email)
+    if (!accountData) {
+        req.flash("notice", "Please check your credentials and try again.")
+        res.status(400).render("account/login", {
+            title: "Login",
+            nav,
+            errors: null,
+            account_email,
+        })
+        return
+    }
+    try {
+        if (await bcrypt.compare(account_password, accountData.account_password)) 
+        {
+            delete accountData.account_password
+            const accessToken = jwt.sign(accountData, process.env.
+            ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+            res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+            return res.redirect("/account/")
+            } else {
+                res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+                return res.redirect("/account/")
+            }
+
+        } catch (error) {
+        throw new Error("Access Forbidden")
+    }
+}
+
+/* ****************************************
+*  Deliver login view
+* *************************************** */
+async function getAccountManagement(req, res, next) {
+    let nav = await utilities.getNav()
+    res.render("account/management", {
+        title: "Account Management",
+        nav,
+        message: req.flash('error') || null
+    })
+}
+
+module.exports = {
+    buildLogin,
+    processLogin,
+    buildRegister,
+    registerAccount,
+    accountLogin,
+    getAccountManagement 
+}

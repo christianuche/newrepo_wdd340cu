@@ -1,0 +1,20 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+  <% } else {
+    res.redirect('/');
+  } %>
+<!-- account/management.ejs -->
+<% if (messages) { %>
+  <div class="success-message">
+    <p><%= messages %></p> <!-- This will show the success message like "You are logged in" -->
+  </div>
+<% } %>
+
+<% if (error) { %>
+  <div class="error-message">
+    <p><%= error %></p> <!-- This will show error messages -->
+  </div>
+<% } %>
+
+<h1>Welcome to Account Management</h1>
+<p>You can manage your account details here.</p>

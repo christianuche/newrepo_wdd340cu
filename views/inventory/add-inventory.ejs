@@ -4,12 +4,6 @@
     res.redirect('/')
 } %>
 
-<% if (locals.flashMessage) { %>
-  <div class="error-messages">
-      <%= flashMessage %>
-  </div>
-<% } %>
-
 <% if (errors) { %>
   <ul class="message warning">
     <% errors.forEach(error => { %>

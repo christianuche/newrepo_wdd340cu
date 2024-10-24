@@ -85,4 +85,45 @@ body("account_email")
     }
   }),
 
+/*  **********************************
+  *  Login Data Validation Rules
+  * ********************************* */
+validate.loginRules = () => {
+  return [
+    // Email is required and must be valid
+    body("account_email")
+      .trim()
+      .isEmail()
+      .withMessage("Please provide a valid email address.")
+      .normalizeEmail(),
+
+    // Password is required (but not checked for strength like in registration)
+    body("account_password")
+      .trim()
+      .notEmpty()
+      .withMessage("Please provide your password."),
+  ]
+}
+
+/* ******************************
+ * Check login data and return errors or continue to login
+ * ***************************** */
+validate.checkLoginData = async (req, res, next) => {
+  const { account_email } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("account/login", {
+      errors,
+      title: "Login",
+      nav,
+      account_email, // Preserve email to avoid re-entering it
+    })
+    return
+  }
+  next()
+}
+
+
 module.exports = validate
