@@ -57,6 +57,14 @@ header a {
   text-decoration: none;
 }
 
+.danger-msg {
+  color: red;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: italic;
+  text-align: center;
+  padding: 10px;
+}
+
 .siteName {
   font-size: 1.5rem;
   font-weight: bold;

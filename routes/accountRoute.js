@@ -24,7 +24,7 @@ router.post(
 )
 // Account management route
 router.get(
-  '/',
+  '/management',
   utilities.checkLogin,
   utilities.handleErrors(accountController.getAccountManagement));
 
