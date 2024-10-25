@@ -5,7 +5,8 @@ const utilities = require('../utilities/index'); // Adjust path as necessary
 const accountController = require('../controllers/accountController');
 const regValidate = require('../utilities/account-validation')
 
-// Login route
+// Registration route
+router.get('/register', utilities.handleErrors(accountController.buildRegister));
 router.post(
     "/register",
     regValidate.registrationRules(),
@@ -13,27 +14,19 @@ router.post(
     utilities.handleErrors(accountController.registerAccount)
 )
 
-// Process the login attempt
+// Login routes
+router.get('/login', utilities.handleErrors(accountController.buildLogin));
 router.post(
   "/login",
   regValidate.loginRules(),
   regValidate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 )
-
-// Route for the login process
-router.post('/login', utilities.handleErrors(accountController.processLogin))
-
-router.get('/management', utilities.handleErrors(accountController.getAccountManagement));
-// Add a GET route for "My Account"
-router.get('/login', utilities.handleErrors(accountController.buildLogin));
-// Add a GET route for "My Account"
-router.post('/login', utilities.handleErrors(accountController.accountLogin));
-// Add a GET route for "My Registration"
-router.get('/register', utilities.handleErrors(accountController.buildRegister));
-// Add the registration route using POST
-router.post('/register', utilities.handleErrors(accountController.registerAccount));
-
+// Account management route
+router.get(
+  '/',
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.getAccountManagement));
 
 // Export the router
 module.exports = router;

@@ -1,7 +1,8 @@
-const jwt = require("jsonwebtoken")
-require("dotenv").config()
 const invModel = require("../models/inventory-model")
-const Util = {}
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
+Util = {}
+
 
 /* ************************
  * Constructs the nav HTML unordered list
@@ -53,7 +54,7 @@ Util.buildClassificationGrid = async function(data){
         grid += '</li>'
       })
       grid += '</ul>'
-    } else { 
+    } else {
       grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
     return grid
@@ -91,7 +92,7 @@ Util.checkJWTToken = (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET,
       function (err, accountData) {
         if (err) {
-          req.flash("Please log in")
+          req.flash("notice", "Please log in")
           res.clearCookies("jwt")
           return res.redirect("/account/login")
         }
@@ -102,6 +103,20 @@ Util.checkJWTToken = (req, res, next) => {
     )
   } else {
     next()
+  }
+}
+
+
+/* ****************************************
+ * Check Login
+ * Unit 5, jwt authorize activity
+ **************************************** */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
   }
 }
 

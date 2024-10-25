@@ -115,34 +115,47 @@ async function accountLogin(req, res, next) {
         return
     }
     try {
-        if (await bcrypt.compare(account_password, accountData.account_password)) 
-        {
+        if (await bcrypt.compare(account_password, accountData.account_password)) {
             delete accountData.account_password
-            const accessToken = jwt.sign(accountData, process.env.
-            ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-            res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
-            return res.redirect("/account/")
+            const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+            if(process.env.NODE_ENV === "development") {
+                res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
             } else {
-                res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
-                return res.redirect("/account/")
+                res.cookie("jwt", accessToken, { httpOnly: true, secure: true,  maxAge: 3600 * 1000 })
             }
-
-        } catch (error) {
+            return res.redirect("/account/management")
+        }
+        else {
+            req.flash("message notice", "Please check your credentials and try again.")
+            res.status(400).render("account/login", {
+                title: "Login",
+                nav,
+                errors: null,
+                account_email,
+            })
+        }
+    } catch (error) {
         throw new Error("Access Forbidden")
     }
 }
 
 /* ****************************************
-*  Deliver login view
-* *************************************** */
+ *  Deliver management view
+ * *************************************** */
 async function getAccountManagement(req, res, next) {
-    let nav = await utilities.getNav()
-    res.render("account/management", {
-        title: "Account Management",
-        nav,
-        message: req.flash('error') || null
-    })
+    try {
+        let nav = await utilities.getNav(); // Get the navigation items
+
+        res.render("account/management", {
+            title: "Account Management",
+            nav,
+        });
+    } catch (error) {
+        console.error("Error retrieving account management view:", error);
+        next(error); // Pass the error to the error handler
+    }
 }
+
 
 module.exports = {
     buildLogin,
@@ -150,5 +163,5 @@ module.exports = {
     buildRegister,
     registerAccount,
     accountLogin,
-    getAccountManagement 
+    getAccountManagement
 }

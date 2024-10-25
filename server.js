@@ -27,6 +27,7 @@ const cookieParser = require("cookie-parser")
 /* ***********************
  * Middleware
  * ************************/
+// Session management
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -38,20 +39,19 @@ app.use(session({
   name: 'sessionId',
 }))
 
-// Using the function checkJWTToken
+// Parse cookies before checking JWT
+app.use(cookieParser())
+
+// JWT and flash message middleware
 app.use(utilities.checkJWTToken)
-// Express Messages Middleware
 app.use(require('connect-flash')())
 
+// Message setup middleware
 app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
 
-app.use(cookieParser)
-
-
-//Added a new
 // Flash middleware to pass messages to every response
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success');
@@ -75,7 +75,6 @@ app.set("layout", "./layouts/layout") // not at views root
  *************************/
 app.use(static)
 
-
 //Index route - Unit 3, activity
 app.get("/", utilities.handleErrors(baseController.buildHome))
 
@@ -89,8 +88,6 @@ app.use("/account", require("./routes/accountRoute"))
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
-
-
 
 /* ***********************
 * Express Error Handler
@@ -106,7 +103,6 @@ app.use(async (err, req, res, next) => {
     nav
   })
 })
-
 
 /* ***********************
 * Intentional Error Handler
