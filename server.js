@@ -81,6 +81,8 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
+app.use("/trigger-error", utilities.handleErrors(baseController.triggerError))
+
 // account route
 app.use("/account", require("./routes/accountRoute"))
 

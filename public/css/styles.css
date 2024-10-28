@@ -499,6 +499,60 @@ input:required:invalid {
   padding: 10px 10px 10px 0px
 }
 
+/* Designing  and styling the Manage Inventory*/
+.invManagementView {
+  margin: 15px;
+}
+
+.invItems {
+  margin: 10px;
+  color: black;
+}
+
+#classificationList {
+  margin: 10px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.invAdd li a {
+  color: white;
+}
+
+#inventoryDisplay {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+}
+
+#inventoryDisplay th, #inventoryDisplay td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+#inventoryDisplay th {
+  background-color: #4a90e2;
+  color: white;
+  font-weight: bold;
+}
+
+#inventoryDisplay td {
+  background-color: #f9f9f9;
+}
+
+#inventoryDisplay tr:hover {
+  background-color: #e6f7ff;
+}
+
+/* NoScript Warning */
+noscript {
+  color: red;
+  font-weight: bold;
+  display: block;
+  margin-top: 1em;
+  text-align: center;
+}
 /* Mobile-friendly adjustments */
 @media (max-width: 400px) {
   .form-container {

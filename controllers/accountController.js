@@ -123,7 +123,7 @@ async function accountLogin(req, res, next) {
             } else {
                 res.cookie("jwt", accessToken, { httpOnly: true, secure: true,  maxAge: 3600 * 1000 })
             }
-            return res.redirect("/account/management")
+            return res.redirect("/account/")
         }
         else {
             req.flash("message notice", "Please check your credentials and try again.")
