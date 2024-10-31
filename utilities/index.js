@@ -74,7 +74,7 @@ Util.buildClassificationList = async function (classification_id = null) {
       classification_id != null &&
       row.classification_id == classification_id
     ) {
-      classification_id += "selected"
+      classificationList += "selected"
     }
     classificationList += ">" + row.classification_name + "</option>"
   })

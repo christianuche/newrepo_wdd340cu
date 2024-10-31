@@ -91,6 +91,7 @@ app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
 
+
 /* ***********************
 * Express Error Handler
 * Place after all other middleware
@@ -117,6 +118,7 @@ app.use((error, req, res, next) => {
     message // Pass the error message to the view
   }) 
 })
+
 
 /* ***********************
  * Local Server Information

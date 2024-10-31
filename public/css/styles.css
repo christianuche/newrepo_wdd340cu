@@ -53,6 +53,10 @@ header {
   padding: 1rem;
 }
 
+.footer {
+  margin:15px;
+}
+
 header a {
   text-decoration: none;
 }
@@ -75,6 +79,10 @@ header a {
   font-size: 1rem;
   font-weight: bold;
   margin-top: -21px;
+}
+
+span {
+  color: #0d0588;
 }
 
 /* Main Style */
@@ -429,6 +437,10 @@ p.insT{
   padding: 20px;
 }
 
+.acctManage {
+  margin: 15px;
+}
+
 
 /* Styling for the validation form */
 label {
@@ -482,12 +494,15 @@ input:required:invalid {
   width: 50%;
 }
 
-
+.TitleH1 {
+  display: grid;
+  grid-template-columns: 1fr;
+}
 .addClass {
+  display: grid;
+  grid-template-columns: 1fr;
   margin: 15px;
   background-color: #0d0588;
-  width: 50%;
-  margin-left: 300px;
 }
 .addFieldset {
   background-color: #023469da;
@@ -495,6 +510,7 @@ input:required:invalid {
 .addField {
   text-align: left;
   font-style: italic;
+  font-weight: 700;
   color: #fff;
   padding: 10px 10px 10px 0px
 }
@@ -567,6 +583,19 @@ noscript {
 @media screen and (min-width: 600px) {
 .upgrade_and_review {
   grid-template-columns: 1fr 1fr;
+}
+
+.addClass {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 15px;
+  background-color: #0d0588;
+  width: 50%;
+  margin-left: 300px;
+}
+
+.form-container {
+  max-width: 300px; /* Slightly smaller for mobile */
 }
 
 #inv-display {

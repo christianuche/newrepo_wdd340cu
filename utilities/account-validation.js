@@ -126,4 +126,85 @@ validate.checkLoginData = async (req, res, next) => {
 }
 
 
+// Update validation
+validate.updateAccountRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("First name is required."),
+
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Last name is required."),
+
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required.")
+      .custom(async (account_email, { req }) => {
+        const existingAccount = await accountModel.checkExistingEmail(account_email)
+        if (existingAccount && existingAccount.account_id !== req.session.account_id) {
+          throw new Error("Email is already in use.")
+        }
+      }),
+  ]
+}
+
+validate.updatePasswordRules = () => {
+  return [
+    body("account_password")
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password must be at least 12 characters long and include uppercase, lowercase, numbers, and symbols."),
+  ]
+}
+
+// Error-checking middleware for account update data
+validate.checkUpdateData = async (req, res, next) => {
+  const { account_firstname, account_lastname, account_email } = req.body
+  let errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("account/update", {
+      errors,
+      title: "Update Account",
+      nav,
+      account_firstname,
+      account_lastname,
+      account_email,
+    })
+    return
+  }
+  next()
+}
+
+// Error-checking middleware for password update data
+validate.checkPasswordData = async (req, res, next) => {
+  let errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("account/update", {
+      errors,
+      title: "Change Password",
+      nav,
+    })
+    return
+  }
+  next()
+}
+
+
+
 module.exports = validate

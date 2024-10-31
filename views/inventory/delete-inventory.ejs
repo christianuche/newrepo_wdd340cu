@@ -1,0 +1,42 @@
+<% if (title) { %>
+  <h1 class="TitleH1"><%= title %></h1>
+  <% } else {
+      res.redirect('/')
+  } %>
+  
+  <% if (errors) { %>
+    <ul class="message warning">
+      <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+      <%  }) %>
+    </ul>
+    <% } %>
+  
+
+  <form class="addClass" action="/inv/delete" method="post" id="deleteForm">
+    <p class="addField">All fields are required.</p>
+    <!-- Caution -->
+    <p class="addField">Confirm Deletion - The deletion is permanent.</p><br>
+    <fieldset class="addFieldset">
+      <!-- Make Field -->
+      <label for="inv_make">Make:</label>
+      <input type="text" readonly <% if(locals.inv_make) { %> value="<%= locals.inv_make %>"<% } %>>
+    
+      <!-- Model Field -->
+      <label for="inv_model">Model:</label>
+      <input type="text" readonly <% if(locals.inv_model) { %> value="<%= locals.inv_model %>"<% } %>>
+      <!-- Price Field -->
+      <label for="inv_price">Price:</label>
+      <input type="number" readonly <% if(locals.inv_price) { %> value="<%= locals.inv_price %>"<% } %>>
+  
+      <!-- Year Field -->
+      <label for="inv_year">Year:</label>
+      <input type="number" readonly <% if(locals.inv_year) { %> value="<%= locals.inv_year %>"<% } %>>
+      
+      <input type="hidden" name="inv_id"
+      <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+      <% } %>>
+      <!-- Submit Button -->
+      <button id="Addbtn" type="submit">Delete Item</button>
+    </fieldset>
+  </form>

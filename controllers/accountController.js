@@ -17,6 +17,14 @@ async function buildLogin(req, res, next) {
     })
 }
 
+async function logout(req, res, next) {
+    res.clearCookie("jwt")
+    res.locals.loggedin = null
+
+    // This will redirect you to the Home Page
+    res.redirect("/")
+}
+
 /* ****************************************
 *  Deliver registration view
 * *************************************** */
@@ -123,7 +131,7 @@ async function accountLogin(req, res, next) {
             } else {
                 res.cookie("jwt", accessToken, { httpOnly: true, secure: true,  maxAge: 3600 * 1000 })
             }
-            return res.redirect("/account/")
+            return res.redirect("/account/management")
         }
         else {
             req.flash("message notice", "Please check your credentials and try again.")
@@ -156,12 +164,68 @@ async function getAccountManagement(req, res, next) {
     }
 }
 
+/* ****************************************
+ *  Deliver update view
+ * *************************************** */
+
+// Function to render the account update view
+async function getAccountUpdateView (req, res, next) {
+  let nav = await utilities.getNav()
+  let accountData = await accountModel.getAccountById(req.session.account_id)
+  res.render("account/update", { 
+    title: "Update Account", 
+    nav,
+    accountData 
+  })
+}
+
+// Function to process account information update
+async function processAccountUpdate (req, res, next) {
+  const { account_firstname, account_lastname, account_email } = req.body
+  const updateResult = await accountModel.updateAccountInfo(
+    req.session.account_id, 
+    account_firstname, 
+    account_lastname, 
+    account_email
+  )
+    if (updateResult) {
+    req.flash("success", "Account information updated successfully.")
+  } else {
+    req.flash("error", "Failed to update account information.")
+  }
+  
+  res.redirect("/account/management")
+}
+
+// Function to process password change
+async function processPasswordChange (req, res, next) {
+  const { account_password } = req.body
+  const hashedPassword = await bcrypt.hash(account_password, 12)
+
+  const passwordUpdateResult = await accountModel.updateAccountPassword(
+    req.session.account_id, 
+    hashedPassword
+  )
+
+  if (passwordUpdateResult) {
+    req.flash("success", "Password updated successfully.")
+  } else {
+    req.flash("error", "Failed to update password.")
+  }
+
+  res.redirect("/account/management")
+}
+
 
 module.exports = {
+    logout,
     buildLogin,
     processLogin,
+    accountLogin,
     buildRegister,
     registerAccount,
-    accountLogin,
-    getAccountManagement
+    getAccountManagement,
+    processPasswordChange,
+    processAccountUpdate,
+    getAccountUpdateView
 }
