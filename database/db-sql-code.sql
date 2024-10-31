@@ -255,3 +255,16 @@ WHERE inv_make = 'GM' AND inv_model = 'Hummer';
 UPDATE public.inventory
 SET inv_image = REPLACE (inv_image, '/images/', '/images/vehicles/'),
 	inv_thumbnail = REPLACE (inv_thumbnail, '/images/', '/images/vehicles/');
+
+
+SELECT * FROM account;
+
+-- Update the Employee account type to "Employee"
+UPDATE account
+SET account_type = 'Employee'
+WHERE account_lastname = 'Employee';
+
+-- Update the Manager account type to "Admin"
+UPDATE account
+SET account_type = 'Admin'
+WHERE account_lastname = 'User';

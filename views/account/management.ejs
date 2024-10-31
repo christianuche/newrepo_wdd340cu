@@ -11,7 +11,7 @@
   <p>You're logged in</p>
 
   <!-- Link to update account information, visible for all account types -->
-  <a href="/account/update/<%= locals.accountData.account_id %>">Update Account Information</a><br><br>
+  <a href="/account/update">Update Account Information</a><br><br>
 
   <!-- Conditional rendering for Employee and Admin accounts -->
   <% if (locals.accountData.account_type === 'Employee' || locals.accountData.account_type === 'Admin') { %>

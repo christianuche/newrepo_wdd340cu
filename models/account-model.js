@@ -47,6 +47,7 @@ async function checkExistingEmail(account_email){
   }
 }
 
+
 /* **********************
  *   Check for account update
  * ********************* */
@@ -54,28 +55,45 @@ async function checkExistingEmail(account_email){
 // Function to get account information by account_id
 async function getAccountById(account_id) {
   try {
-    const query = `SELECT * FROM accounts WHERE account_id = $1`
-    const result = await pool.query(query, [account_id])
-    return result.rows[0]
-
+    const query = "SELECT * FROM account WHERE account_id = $1";
+    const result = await pool.query(query, [account_id]);
+    return result.rows[0]; // returns account information as an object
   } catch (error) {
-    return error.message
+    console.error("Error fetching account by ID:", error);
+    throw new Error("Database error occurred while fetching account information");
   }
 }
 
-
 // Function to update account information
-async function updateAccountInfo (account_id, firstname, lastname, email) {
-  const query = `UPDATE accounts SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *`
-  const result = await pool.query(query, [firstname, lastname, email, account_id])
-  return result.rowCount > 0
+async function updateAccountInfo(account_id, account_firstname, account_lastname, account_email) {
+  try {
+    const query = `
+      UPDATE account 
+      SET account_firstname = $1, account_lastname = $2, account_email = $3 
+      WHERE account_id = $4 
+      RETURNING *`;
+    const result = await pool.query(query, [account_firstname, account_lastname, account_email, account_id]);
+    return result.rows[0]; // Returns updated account data
+  } catch (error) {
+    console.error("Error updating account information:", error);
+    throw new Error("Database error occurred while updating account information");
+  }
 }
 
 // Function to update password
-async function updateAccountPassword (account_id, password) {
-  const query = `UPDATE accounts SET account_password = $1 WHERE account_id = $2 RETURNING *`
-  const result = await pool.query(query, [password, account_id])
-  return result.rowCount > 0
+async function updateAccountPassword(account_id, account_password) {
+  try {
+    const query = `
+      UPDATE account 
+      SET account_password = $1 
+      WHERE account_id = $2 
+      RETURNING *`;
+    const result = await pool.query(query, [account_password, account_id]);
+    return result.rows[0]; // Returns updated account data
+  } catch (error) {
+    console.error("Error updating account password:", error);
+    throw new Error("Database error occurred while updating account password");
+  }
 }
 
 

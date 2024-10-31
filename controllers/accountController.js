@@ -171,11 +171,9 @@ async function getAccountManagement(req, res, next) {
 // Function to render the account update view
 async function getAccountUpdateView (req, res, next) {
   let nav = await utilities.getNav()
-  let accountData = await accountModel.getAccountById(req.session.account_id)
   res.render("account/update", { 
     title: "Update Account", 
     nav,
-    accountData 
   })
 }
 

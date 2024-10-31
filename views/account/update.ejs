@@ -7,42 +7,44 @@
   <div class="danger-msg">  <%- messages() %></div><br>
   
     <!-- Account Update Form -->
-    <form action="/account/update" method="POST">
+    <form action="/account/update" method="POST" class="form-group">
+      <fieldset class="addFieldset">
         <h2>Account Update</h2>
 
-        <!-- Hidden account_id field -->
-        <input type="hidden" name="account_id" value="<%= locals.accountData.account_id %>">
-
+      
         <!-- First Name -->
-        <label for="first_name">First Name:</label>
+        <label for="account_firstname">First Name:</label>
         <input type="text" id="account_firstname" name="account_firstname" value="<%= locals.accountData.account_firstname || '' %>" required>
 
         <!-- Last Name -->
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="lastName" name="account_lastname" value="<%= locals.accountData.account_lastname || '' %>" required>
+        <label for="account_lastname">Last Name:</label>
+        <input type="text" id="account_lastname" name="account_lastname" value="<%= locals.accountData.account_lastname || '' %>" required>
 
         <!-- Email Address -->
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="account_email" value="<%= locals.accountData.account_email || '' %>" required>
+        <label for="account_email">Email:</label>
+        <input type="account_email" id="account_email" name="account_email" value="<%= locals.accountData.account_email || '' %>" required>
 
         <!-- Submit Button -->
         <input type="submit" value="Update Account">
+      </fieldset>
     </form>
 
     <br><br>
 
     <!-- Change Password Form -->
-    <form action="/account/updatePassword" method="POST">
+    <form action="/account/updatePassword" method="POST" class="form-group">
+      <fieldset class="addFieldset">
         <h2>Change Password</h2>
 
         <!-- Hidden account_id field -->
         <input type="hidden" name="account_id" value="<%= locals.accountData.account_id %>">
 
         <!-- New Password -->
-        <label for="password">New Password:</label>
-        <input type="password" id="account_password" name="account_password">
+        <label for="account_password">New Password:</label>
+        <input type="password" id="account_password" name="account_password" required>
         <p>Password must be at least 12 characters, include one uppercase letter, one lowercase letter, and one number.</p>
 
         <!-- Submit Button -->
         <input type="submit" value="Change Password">
+      </fieldset>
     </form>

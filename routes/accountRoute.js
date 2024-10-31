@@ -42,7 +42,7 @@ router.post("/update",
 )
 
 // POST route to handle password change request
-router.post("/update-password", 
+router.post("/updatePassword", 
   regValidate.updatePasswordRules(), 
   regValidate.checkPasswordData, 
   utilities.handleErrors(accountController.processPasswordChange)
