@@ -17,7 +17,7 @@ async function buildLogin(req, res, next) {
     })
 }
 
-async function logout(req, res, next) {
+async function logout(req, res,) {
     res.clearCookie("jwt")
     res.locals.loggedin = null
 

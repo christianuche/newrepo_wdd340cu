@@ -532,6 +532,19 @@ input:required:invalid {
 }
 
 .invAdd li a {
+  color: rgb(246, 246, 248);
+}
+
+.invAddi {
+  background-color: #333;
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.invAddi li a {
   color: white;
 }
 

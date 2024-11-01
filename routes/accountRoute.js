@@ -15,6 +15,7 @@ router.post(
 )
 
 // Login routes
+router.get('/logout', utilities.handleErrors(accountController.logout));
 router.get('/login', utilities.handleErrors(accountController.buildLogin));
 router.post(
   "/login",
