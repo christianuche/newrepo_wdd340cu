@@ -6,12 +6,12 @@
   
   <div class="danger-msg">  <%- messages() %></div><br>
   
+  <div class="reg-form">
     <!-- Account Update Form -->
     <form action="/account/update" method="POST" class="form-group">
-      <fieldset class="addFieldset">
-        <h2>Account Update</h2>
+      <h2>Account Update</h2><br>
 
-      
+      <fieldset class="addFieldset">
         <!-- First Name -->
         <label for="account_firstname">First Name:</label>
         <input type="text" id="account_firstname" name="account_firstname" value="<%= locals.accountData.account_firstname || '' %>" required>
@@ -25,7 +25,7 @@
         <input type="account_email" id="account_email" name="account_email" value="<%= locals.accountData.account_email || '' %>" required>
 
         <!-- Submit Button -->
-        <input type="submit" value="Update Account">
+        <input type="submit" class="btn btn-primary" value="Update Account">
       </fieldset>
     </form>
 
@@ -33,18 +33,19 @@
 
     <!-- Change Password Form -->
     <form action="/account/updatePassword" method="POST" class="form-group">
+      <h2>Change Password</h2><br>
       <fieldset class="addFieldset">
-        <h2>Change Password</h2>
 
         <!-- Hidden account_id field -->
         <input type="hidden" name="account_id" value="<%= locals.accountData.account_id %>">
 
         <!-- New Password -->
         <label for="account_password">New Password:</label>
-        <input type="password" id="account_password" name="account_password" required>
+        <input type="password" id="account_password" name="account_password">
         <p>Password must be at least 12 characters, include one uppercase letter, one lowercase letter, and one number.</p>
 
         <!-- Submit Button -->
-        <input type="submit" value="Change Password">
+        <input type="submit" class="btn btn-primary" value="Change Password">
       </fieldset>
     </form>
+  </div>
