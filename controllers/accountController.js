@@ -215,13 +215,89 @@ async function processPasswordChange (req, res, next) {
 }
 
 
+/* ****************************************
+*  Deliver profile view
+* *************************************** */
+async function viewProfile(req, res, next) {
+    try {
+        const user_id = req.session.userId; // Assuming user ID is stored in session
+        const profile = await userProfileModel.getUserProfile(user_id);
+        let nav = await utilities.getNav();
+        res.render("account/profile-view", {
+            title: "Profile",
+            nav,
+            profile,
+            errors: null,
+        });
+    } catch (error) {
+        console.error('Error rendering profile view:', error);
+        res.status(500).render("account/profile-view", {
+            title: "Profile",
+            nav: [],
+            profile: {},
+            errors: [{ msg: 'Failed to load profile view' }],
+        });
+    }
+}
+
+async function createProfile (req, res, next) {
+    let nav = await utilities.getNav()
+    res.render("account/create-profile", {
+      title: "Create Profile",
+      nav,
+    })
+}
+
+// Function to process account information update
+async function createAccountProfile (req, res, next) {
+    const { user_id, bio, profile_picture, contact_number } = req.body
+    const createResult = await accountModel.addUserProfile(
+      req.session.user_id, bio, profile_picture, contact_number
+    )
+      if (createResult) {
+      req.flash("success", "Account information updated successfully.")
+    } else {
+      req.flash("error", "Failed to update account information.")
+    }
+    
+    res.redirect("/account/management")
+  }
+  
+  // Function to process password change
+// async function createpProfile(req, res) {
+
+//     const { user_id, bio, profile_picture, contact_number } = req.body;
+//     try {
+//         const newProfile = await accountModel.addUserProfile(user_id, bio, profile_picture, contact_number);
+//         res.status(201).json({ message: 'Profile created successfully', profile: newProfile });
+//       } catch (error) {
+//         console.error('Error creating profile:', error);
+//         res.status(500).json({ error: 'Failed to create profile' });
+//       }
+// }
+
+async function editProfile(req, res) {
+  const { user_id, bio, profile_picture, contact_number } = req.body;
+  try {
+    const updatedProfile = await userProfileModel.updateUserProfile(user_id, bio, profile_picture, contact_number);
+    res.status(200).json({ message: 'Profile updated successfully', profile: updatedProfile });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+}
+
 module.exports = {
     logout,
+    viewProfile,
+    editProfile,
+    createProfile,
     buildLogin,
     processLogin,
     accountLogin,
     buildRegister,
     registerAccount,
+    createAccountProfile,
     getAccountManagement,
     processPasswordChange,
     processAccountUpdate,

@@ -1,4 +1,6 @@
 const pool = require("../database/")
+const bcrypt = require("bcryptjs")
+
 
 /* *****************************
  *   Register new account
@@ -57,14 +59,14 @@ async function getAccountById(account_id) {
   try {
     const query = "SELECT * FROM account WHERE account_id = $1";
     const result = await pool.query(query, [account_id]);
-    return result.rows[0]; // returns account information as an object
+    return result.rowCount // returns account information as an object
   } catch (error) {
     console.error("Error fetching account by ID:", error);
     throw new Error("Database error occurred while fetching account information");
   }
 }
 
-// Function to update account information
+// In updateAccountInfo
 async function updateAccountInfo(account_id, account_firstname, account_lastname, account_email) {
   try {
     const query = `
@@ -73,29 +75,97 @@ async function updateAccountInfo(account_id, account_firstname, account_lastname
       WHERE account_id = $4 
       RETURNING *`;
     const result = await pool.query(query, [account_firstname, account_lastname, account_email, account_id]);
-    return result.rows[0]; // Returns updated account data
+
+    console.log("Updated Account Info:", result.rowCount); // Debugging
+    return result.rowCount // Returns updated account data
   } catch (error) {
     console.error("Error updating account information:", error);
     throw new Error("Database error occurred while updating account information");
   }
 }
 
+async function updateAccountInfo(req, res) {
+  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+
+  try {
+    const result = await pool.query(
+      'UPDATE account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *;',
+      [account_firstname, account_lastname, account_email, account_id]
+    );
+    res.status(200).json({
+      message: 'Account updated successfully',
+      updatedAccount: result.rows[0]
+    });
+  } catch (error) {
+    console.error('Error updating account:', error);
+    res.status(500).json({ error: 'Failed to update account' });
+  }
+}
+
 // Function to update password
+
 async function updateAccountPassword(account_id, account_password) {
   try {
+    const hashedPassword = await bcrypt.hash(account_password, 10);
     const query = `
       UPDATE account 
       SET account_password = $1 
       WHERE account_id = $2 
       RETURNING *`;
-    const result = await pool.query(query, [account_password, account_id]);
-    return result.rows[0]; // Returns updated account data
+    const result = await pool.query(query, [hashedPassword, account_id]);
+
+    return result.rowCount // Returns updated account data
   } catch (error) {
     console.error("Error updating account password:", error);
     throw new Error("Database error occurred while updating account password");
   }
 }
 
+async function getUserProfile(user_id) {
+  const result = await pool.query(
+    `SELECT * FROM user_profiles WHERE user_id = $1;`,
+    [user_id]
+  );
+  return result.rows[0];
+}
+
+async function addUserProfile(user_id, bio, profile_picture, contact_number) {
+  try {
+    // SQL query to insert a new account into the "account" table
+    const sql = `
+      INSERT INTO user_profile (user_id, bio, profile_picture, contact_number) 
+      VALUES ($1, $2, $3, $4,)
+      RETURNING *`
+
+    // Execute the query using the provided parameters
+    return await pool.query(sql, [user_id, bio, profile_picture, contact_number])
+  } catch (error) {
+    console.error("Error adding new profile: ", error.message)
+    return error.message
+  }
+}
+
+async function updateUserProfile(user_id, bio, profile_picture, contact_number) {
+  const result = await pool.query(
+    `UPDATE user_profiles
+     SET bio = $1, profile_picture = $2, contact_number = $3, updated_at = CURRENT_TIMESTAMP
+     WHERE user_id = $4
+     RETURNING *;`,
+    [bio, profile_picture, contact_number, user_id]
+  );
+  return result.rows[0];
+}
+
+
 
 // Export the registerAccount function for use in other parts of the application
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, updateAccountInfo, updateAccountPassword }
+module.exports = { 
+  registerAccount,
+  checkExistingEmail, 
+  getAccountByEmail,
+  updateUserProfile, 
+  getAccountById, 
+  updateAccountInfo, 
+  updateAccountPassword, 
+  getUserProfile,
+  addUserProfile }

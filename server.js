@@ -23,7 +23,6 @@ const accountController = require("./controllers/accountController")
 const bodyParser = require("body-parser") // import the body-parser
 const cookieParser = require("cookie-parser")
 
-
 /* ***********************
  * Middleware
  * ************************/

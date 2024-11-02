@@ -55,6 +55,17 @@ CREATE TABLE IF NOT EXISTS public.account
     CONSTRAINT account_pkey PRIMARY KEY (account_id)
 );
 
+-- Table structure for table `user_profiles`
+CREATE TABLE IF NOT EXISTS public.user_profiles(
+    profile_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES public.account(account_id),
+    bio TEXT,
+    profile_picture VARCHAR(255),
+    contact_number VARCHAR(15),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 --5) Data for table `classification`
 INSERT INTO public .classification (classification_name)
 VALUES ('Custom'),

@@ -13,6 +13,9 @@
   <!-- Link to update account information, visible for all account types -->
   <a href="/account/update">Update Account Information</a><br><br>
 
+  <!-- Link to update account information, visible for all account types -->
+  <a href="/account/create-profile">Create Personal Profile</a><br><br>
+
   <!-- Conditional rendering for Employee and Admin accounts -->
   <% if (locals.accountData.account_type === 'Employee' || locals.accountData.account_type === 'Admin') { %>
   <h3>Inventory Management</h3>

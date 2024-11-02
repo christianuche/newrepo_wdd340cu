@@ -1,0 +1,35 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+  <% } else {
+    res.redirect('/');
+  } %>
+  
+  <div class="danger-msg">  <%- messages() %>
+  </div>
+
+
+<div class="login-page">
+    <div class="login-form-container">
+        <form action="/profile/create-profile" method="POST" id="login-form">
+            <fieldset>
+                <div>
+                    <label for="user_id">User ID:</label>
+                    <input type="text" id="user_id" name="user_id" required>
+                </div>
+                <div>
+                    <label for="bio">Bio:</label>
+                    <textarea id="bio" name="bio" rows="4" required></textarea>
+                </div>
+                <div>
+                    <label for="profile_picture">Profile Picture URL:</label>
+                    <input type="url" id="profile_picture" name="profile_picture" required>
+                </div>
+                <div>
+                    <label for="contact_number">Contact Number:</label>
+                    <input type="tel" id="contact_number" name="contact_number" required>
+                </div>
+                <button type="submit">Create Profile</button>
+            </fieldset>
+        </form>
+    </div>
+</div>

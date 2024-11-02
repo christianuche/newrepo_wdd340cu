@@ -5,6 +5,9 @@ const utilities = require('../utilities/index'); // Adjust path as necessary
 const accountController = require('../controllers/accountController');
 const regValidate = require('../utilities/account-validation')
 
+
+
+
 // Registration route
 router.get('/register', utilities.handleErrors(accountController.buildRegister));
 router.post(
@@ -30,7 +33,14 @@ router.get(
   utilities.checkLogin,
   utilities.handleErrors(accountController.getAccountManagement));
 
-
+// GET route to render the account profile view
+router.get("/create-profile", utilities.handleErrors(accountController.createProfile))
+// POST route to process account profile create
+router.post("/create", 
+  //regValidate.updateAccountRules(),
+  //regValidate.checkUpdateData,
+  utilities.handleErrors(accountController.createAccountProfile)
+)
 
 // GET route to render the account update view
 router.get("/update", utilities.handleErrors(accountController.getAccountUpdateView))
