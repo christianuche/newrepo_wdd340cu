@@ -31,7 +31,11 @@ router.post(
 router.get(
   "/management",
   utilities.checkLogin,
-  utilities.handleErrors(accountController.getAccountManagement));
+  utilities.handleErrors(accountController.getAccountManagement)
+);
+
+
+router.get('/profile-view', utilities.handleErrors(accountController.viewProfile)); // Route to view profile
 
 // GET route to render the account profile view
 router.get("/create-profile", utilities.handleErrors(accountController.createProfile))

@@ -1,33 +1,21 @@
 <% if (title) { %>
-    <h1><%= title %></h1>
-  <% } else {
-    res.redirect('/');
-  } %>
-  
-  <div class="danger-msg">  <%- messages() %>
-  </div>
-  <h2>Your Profile Information</h2>
-        
-  <div class="profile-info">
-      <img src="<%= profile.profile_picture %>" alt="Profile Picture" class="profile-pic">
-      <p><strong>Bio:</strong> <%= profile.bio || "No bio provided." %></p>
-      <p><strong>Contact Number:</strong> <%= profile.contact_number || "Not provided." %></p>
-  </div>
+  <h1><%= title %></h1>
+<% } else { %>
+  <h1>Profile</h1>
+<% } %>
 
-  <h3>Edit Profile</h3>
-  <form action="/profile/edit" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="user_id" value="<%= profile.user_id %>">
-      <div>
-          <label for="bio">Bio:</label>
-          <textarea id="bio" name="bio" rows="4" required><%= profile.bio || "" %></textarea>
-      </div>
-      <div>
-          <label for="profile_picture">Profile Picture URL:</label>
-          <input type="url" id="profile_picture" name="profile_picture" value="<%= profile.profile_picture || "" %>">
-      </div>
-      <div>
-          <label for="contact_number">Contact Number:</label>
-          <input type="tel" id="contact_number" name="contact_number" value="<%= profile.contact_number || "" %>">
-      </div>
-      <button type="submit">Update Profile</button>
-  </form>
+<div class="danger-msg"><%- messages() %></div>
+
+<% if (profile) { %>
+  <div class="proForm">
+    <h2 class="TagTitle">User Profile</h2>
+    <div class="items-list">
+      <p><strong>User ID:</strong> <%= locals.user_id %></p>
+      <p><strong>Bio:</strong> <%= locals.bio %></p>
+      <p><strong>Profile Picture:</strong> <img src="<%= locals.profile_picture %>" alt="Profile Picture" /></p>
+      <p><strong>Contact Number:</strong> <%= locals.contact_number %></p>
+    </div>
+  </div>
+<% } else { %>
+  <p>No profile information available.</p>
+<% } %>

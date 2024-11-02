@@ -221,7 +221,7 @@ async function processPasswordChange (req, res, next) {
 async function viewProfile(req, res, next) {
     try {
         const user_id = req.session.userId; // Assuming user ID is stored in session
-        const profile = await userProfileModel.getUserProfile(user_id);
+        const profile = await accountModel.getUserProfile(user_id);
         let nav = await utilities.getNav();
         res.render("account/profile-view", {
             title: "Profile",

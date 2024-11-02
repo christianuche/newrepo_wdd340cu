@@ -9,7 +9,7 @@ async function registerAccount(account_firstname, account_lastname, account_emai
   try {
     // SQL query to insert a new account into the "account" table
     const sql = `
-      INSERT INTO account (account_firstname, account_lastname, account_email, account_password, account_type) 
+      INSERT INTO account (account_firstname, account_lastname, account_email, account_password, account_type)
       VALUES ($1, $2, $3, $4, 'Client')
       RETURNING *`
 
@@ -128,10 +128,21 @@ async function getUserProfile(user_id) {
   );
   return result.rows[0];
 }
+async function getUserProfile(user_id) {
+  try {
+    const query = "SELECT * FROM account WHERE user_id = $1";
+    const result = await pool.query(query, [user_id]);
+    return result.rowCount // returns account information as an object
+  } catch (error) {
+    console.error("Error fetching profile by ID:", error);
+    throw new Error("Database error occurred while fetching account information");
+  }
+}
+
 
 async function addUserProfile(user_id, bio, profile_picture, contact_number) {
   try {
-    // SQL query to insert a new account into the "account" table
+    // SQL query to insert a new account into the "user_profile" table
     const sql = `
       INSERT INTO user_profile (user_id, bio, profile_picture, contact_number) 
       VALUES ($1, $2, $3, $4,)
